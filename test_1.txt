@@ -1,6 +1,5 @@
-Ceci est\n
-un super\n
-test\n
-.\n
-\n
-fin\n
+Ceci est
+un super
+test
+
+fin
