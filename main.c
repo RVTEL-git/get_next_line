@@ -1,32 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/12 13:41:46 by barmarti          #+#    #+#             */
-/*   Updated: 2025/05/14 18:57:27 by barmarti         ###   ########.fr       */
+/*   Created: 2025/05/14 18:55:31 by barmarti          #+#    #+#             */
+/*   Updated: 2025/05/14 19:07:01 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "get_next_line.h"
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1024
-# endif
-
-# include <fcntl.h>
-# include <stdlib.h>
-# include <unistd.h>
-
-typedef struct s_list
+void	ft_putstr(char *str)
 {
-	char			*str;
-	struct s_list	*next;
-}	s_list;
+	int	i;
 
-char	*get_next_line(int fd);
+	i = 0;
+	while (str)
+	{
+		write(1, &str[i], 1);
+		i++;
+	}
+}
 
-#endif
+int	main(int ac, char **av)
+{
+	int	fd;
+
+	if (ac != 2)
+	{
+		ft_putstr("Err || check args");
+		return (1);
+	}
+	fd = open(av[1], O_RDONLY);
+	else if (fd < 0)
+	{
+		ft_putstr("Err || can't open file");
+		get_next_line(av[1]);
+		return (1);
+	}
+	else
+	{
+		get_next_line(av[1]);
+		return (0);
+	}
+}

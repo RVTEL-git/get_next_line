@@ -1,32 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_lst.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/12 13:41:46 by barmarti          #+#    #+#             */
-/*   Updated: 2025/05/14 18:57:27 by barmarti         ###   ########.fr       */
+/*   Created: 2025/05/14 19:07:53 by barmarti          #+#    #+#             */
+/*   Updated: 2025/05/14 19:07:54 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1024
-# endif
-
-# include <fcntl.h>
-# include <stdlib.h>
-# include <unistd.h>
-
-typedef struct s_list
-{
-	char			*str;
-	struct s_list	*next;
-}	s_list;
-
-char	*get_next_line(int fd);
-
-#endif
