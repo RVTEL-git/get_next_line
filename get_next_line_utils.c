@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 13:41:48 by barmarti          #+#    #+#             */
-/*   Updated: 2025/05/15 14:22:02 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/05/15 21:58:52 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,39 +43,31 @@ t_list	*ft_lstnew(void *content)
 	return (new);
 }
 
-size_t	ft_strlen(char *str)
+void	make_list(t_list **lst, char *buff)
 {
-	size_t	i;
+	t_list	*node;
 
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
+	node = ft_lstnew(buff);
+	ft_lstadd_back(lst, node);
 }
 
-char	*join(char *s1, char *s2)
+int	get_line_len_len(t_list *lst)
 {
-	size_t			s1_len;
-	size_t			s2_len;
-	unsigned int	i;
-	char			*join;
+	int	i;
 
-	if (!s1 || !s2)
-		return (NULL);
-	s1_len = ft_strlen(s1);
-	s2_len = ft_strlen(s2);
-	i = -1;
-	join = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1));
-	if (!join)
-		return (NULL);
-	while (s1[++i])
-		join[i] = s1[i];
-	i = -1;
-	while (s2[++i])
+	i = 0;
+	while (lst)
 	{
-		join[s1_len] = s2[i];
-		s1_len++;
+		while (lst->content[i] && i < BUFFER_SIZE)
+		{
+			if (lst->content[i] == '\n')
+			{
+				i++;
+				return (i);
+			}
+			i++;
+		}
+		lst = lst->next;
 	}
-	join[s1_len] = '\0';
-	return (join);
+	return (0);
 }

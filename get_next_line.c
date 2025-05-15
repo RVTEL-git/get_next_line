@@ -6,54 +6,19 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 19:07:53 by barmarti          #+#    #+#             */
-/*   Updated: 2025/05/15 15:08:31 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/05/15 21:59:51 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
-/*
-- Dois-je toujours iterrer sur temp/curr pour lst ?
-*/
-
 #include "get_next_line.h"
 #include <stdio.h>
-
-int	get_line(t_list *lst)
-{
-	int	i;
-
-	i = 0;
-	printf("3 - get_line\n");
-	while (lst)
-	{
-		while (lst->content[i] && i < BUFFER_SIZE)
-		{
-			if (lst->content[i] == '\n')
-				return (i);
-			i++;
-		}
-		lst = lst->next;
-	}
-	return (0);
-}
-
-void	make_list(t_list **lst, char *buff)
-{
-	t_list	*node;
-
-	printf("4 - make_list\n");
-	node = ft_lstnew(buff);
-	ft_lstadd_back(lst, node);
-}
 
 void	get_content(t_list **lst, int fd)
 {
 	int		read_v;
 	char	*buff;
 
-	printf("2 - get_content\n");
-	while (!get_line(*lst))
+	while (!get_line_len(*lst))
 	{
 		buff = malloc(BUFFER_SIZE + 1);
 		if (!buff)
@@ -66,43 +31,50 @@ void	get_content(t_list **lst, int fd)
 	}
 }
 
+void	clean_lst(t_list **lst)
+{
+	int	i;
+	
+}
+
 char	*find_new_line(t_list *lst)
 {
-	char	*new_line;
-	char	*temp_str;
-	t_list	*temp_lst;
-	int		index_nl;
-	int		i;
+	char		*new_line;
+	t_list		*temp;
+	int			index_nl;
+	int			i;
 
-	index_nl = get_line(lst);
-	temp_lst = lst;
+	index_nl = get_line_len(lst);
 	i = 0;
-	while (temp_lst)
+	temp = lst;
+	new_line = (char *)malloc(index_nl + 1);
+	if (!new_line)
+		return (NULL);
+	while (temp && i <= index_nl)
 	{
-		while (temp_lst->content[i -1] != '\n')
+		while (temp->content[i -1] != '\n' || temp->content[i] == '\0')
 		{
-			if (temp_lst->content[i] == '\0' || temp_lst->content[i] == '\n')
-			{
-				new_line = join(new_line, temp_lst->content);
-				temp_lst = temp_lst->next;
-			}
+			new_line[i] = temp->content[i];
 			i++;
 		}
+		temp = temp->next;
 	}
+	new_line[i] = '\0';
 	return (new_line);
 }
 
 char	*get_next_line(int fd)
 {
-	t_list	*lst;
+	static t_list	*lst;
 	char	*line;
 
-	printf("1 - get_next_line\n");
 	lst = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	get_content(&lst, fd);
 	line = find_new_line(lst);
+	//clear lst
+	printf("%s", line);
 	return (line);
 }
 
@@ -112,5 +84,6 @@ int	main()
 
 	fd = open("test_1.txt", O_RDONLY);
 	get_next_line(fd);
+
 	return (0);
 }
