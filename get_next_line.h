@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 13:41:46 by barmarti          #+#    #+#             */
-/*   Updated: 2025/05/15 10:52:55 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/05/15 14:43:30 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,21 @@
 
 typedef struct s_list
 {
-	char			*str;
+	char			*content;
 	struct s_list	*next;
 }	t_list;
 
 char	*get_next_line(int fd);
+char	*join(char *s1, char *s2);
+
+int		get_line(t_list *lst);
+
+t_list	*ft_lstnew(void *content);
+
+size_t	ft_strlen(char *str);
+
+void	get_content(t_list **lst, int fd);
+void	ft_lstadd_back(t_list **lst, t_list *new);
+void	make_list(t_list **lst, char *buff);
 
 #endif
