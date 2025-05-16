@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 13:41:46 by barmarti          #+#    #+#             */
-/*   Updated: 2025/05/16 11:39:12 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:04:02 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1024
+#  define BUFFER_SIZE 2048
 # endif
 
 # include <fcntl.h>
@@ -38,5 +38,6 @@ t_list	*make_list(t_list **lst, char *buff);
 t_list	*new_node(char	*content);
 
 void	get_content(t_list **lst, int fd);
+void	print_list(t_list *lst);
 
 #endif

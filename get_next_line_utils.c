@@ -6,11 +6,26 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 13:41:48 by barmarti          #+#    #+#             */
-/*   Updated: 2025/05/16 11:39:52 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:14:57 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
+
+void	print_list(t_list *lst)
+{
+	if (!lst)
+	{
+		printf("No list available\n");
+		return ;
+	}
+	while (lst)
+	{
+		printf(" [%s] -> ", lst->content);
+		lst = lst->next;
+	}
+}
 
 t_list	*new_node(char	*content)
 {
@@ -47,20 +62,25 @@ t_list	*make_list(t_list **lst, char *buff)
 int	get_line_len(t_list *lst)
 {
 	int		i;
+	int		j;
 	t_list	*curr;
 
 	curr = lst;
 	i = 0;
+	j = 0;
 	while (curr)
 	{
-		while (curr->content[i] && i < BUFFER_SIZE)
+		j = 0;
+		while (curr->content[j])
 		{
-			if (curr->content[i] == '\n')
+			if (curr->content[j] == '\n')
 			{
 				i++;
+				j++;
 				return (i);
 			}
 			i++;
+			j++;
 		}
 		curr = curr->next;
 	}
