@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 13:41:48 by barmarti          #+#    #+#             */
-/*   Updated: 2025/05/15 21:58:52 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/05/16 09:53:01 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,21 +53,23 @@ void	make_list(t_list **lst, char *buff)
 
 int	get_line_len_len(t_list *lst)
 {
-	int	i;
+	int		i;
+	t_list	*curr;
 
+	curr = lst;
 	i = 0;
-	while (lst)
+	while (curr)
 	{
-		while (lst->content[i] && i < BUFFER_SIZE)
+		while (curr->content[i] && i < BUFFER_SIZE)
 		{
-			if (lst->content[i] == '\n')
+			if (curr->content[i] == '\n')
 			{
 				i++;
 				return (i);
 			}
 			i++;
 		}
-		lst = lst->next;
+		curr = curr->next;
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 19:07:53 by barmarti          #+#    #+#             */
-/*   Updated: 2025/05/15 21:59:51 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/05/16 09:56:56 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,33 +31,46 @@ void	get_content(t_list **lst, int fd)
 	}
 }
 
-void	clean_lst(t_list **lst)
+t_list	*clean_lst(t_list **lst)
 {
-	int	i;
-	
+	int		i;
+	int		i_b;
+	t_list	*curr;
+	char	*temp;
+
+	i = 0;
+	curr = *lst;
+	while(curr)
+	{
+		if (curr->content[i] == '\n')
+		{
+			i++;
+			
+		}
+	}
 }
 
 char	*find_new_line(t_list *lst)
 {
 	char		*new_line;
-	t_list		*temp;
+	t_list		*curr;
 	int			index_nl;
 	int			i;
 
 	index_nl = get_line_len(lst);
 	i = 0;
-	temp = lst;
+	curr = lst;
 	new_line = (char *)malloc(index_nl + 1);
 	if (!new_line)
 		return (NULL);
-	while (temp && i <= index_nl)
+	while (curr && i <= index_nl)
 	{
-		while (temp->content[i -1] != '\n' || temp->content[i] == '\0')
+		while (curr->content[i -1] != '\n' || curr->content[i] == '\0')
 		{
-			new_line[i] = temp->content[i];
+			new_line[i] = curr->content[i];
 			i++;
 		}
-		temp = temp->next;
+		curr = curr->next;
 	}
 	new_line[i] = '\0';
 	return (new_line);
@@ -66,24 +79,24 @@ char	*find_new_line(t_list *lst)
 char	*get_next_line(int fd)
 {
 	static t_list	*lst;
-	char	*line;
+	char			*line;
 
 	lst = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	get_content(&lst, fd);
 	line = find_new_line(lst);
-	//clear lst
+	clean_lst(&lst);
 	printf("%s", line);
+	
 	return (line);
 }
 
-int	main()
+int	main(void)
 {
 	int	fd;
 
 	fd = open("test_1.txt", O_RDONLY);
 	get_next_line(fd);
-
 	return (0);
 }
