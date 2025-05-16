@@ -6,32 +6,13 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 13:41:48 by barmarti          #+#    #+#             */
-/*   Updated: 2025/05/16 09:53:01 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/05/16 11:39:52 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
-{
-	t_list	*curr;
-
-	if (!lst || !new)
-		return ;
-	if (!*lst)
-	{
-		*lst = new;
-		return ;
-	}
-	curr = *lst;
-	while (curr->next != NULL)
-	{
-		curr = curr->next;
-	}
-	curr->next = new;
-}
-
-t_list	*ft_lstnew(void *content)
+t_list	*new_node(char	*content)
 {
 	t_list	*new;
 
@@ -43,15 +24,27 @@ t_list	*ft_lstnew(void *content)
 	return (new);
 }
 
-void	make_list(t_list **lst, char *buff)
+t_list	*make_list(t_list **lst, char *buff)
 {
-	t_list	*node;
+	t_list	*curr;
+	t_list	*new;
 
-	node = ft_lstnew(buff);
-	ft_lstadd_back(lst, node);
+	if (!lst || !buff)
+		return (NULL);
+	new = new_node(buff);
+	if (!*lst)
+	{
+		*lst = new;
+		return (*lst);
+	}
+	curr = *lst;
+	while (curr->next != NULL)
+		curr = curr->next;
+	curr->next = new;
+	return (*lst);
 }
 
-int	get_line_len_len(t_list *lst)
+int	get_line_len(t_list *lst)
 {
 	int		i;
 	t_list	*curr;
@@ -72,4 +65,25 @@ int	get_line_len_len(t_list *lst)
 		curr = curr->next;
 	}
 	return (0);
+}
+
+char	*dup_line(char *src)
+{
+	char	*dup;
+	int		i;
+
+	i = 0;
+	while (src[i])
+		i++;
+	dup = malloc(i + 1);
+	if (!dup)
+		return (NULL);
+	i = 0;
+	while (src[i])
+	{
+		dup[i] = src[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
 }

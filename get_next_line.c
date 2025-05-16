@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 19:07:53 by barmarti          #+#    #+#             */
-/*   Updated: 2025/05/16 09:56:56 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/05/16 12:09:48 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,30 @@ void	get_content(t_list **lst, int fd)
 t_list	*clean_lst(t_list **lst)
 {
 	int		i;
-	int		i_b;
+	t_list	*new;
 	t_list	*curr;
 	char	*temp;
 
 	i = 0;
 	curr = *lst;
-	while(curr)
+	while (*lst)
 	{
-		if (curr->content[i] == '\n')
+		while (lst->content[i++])
 		{
-			i++;
-			
+			if (curr->content[i -1] == '\n')
+			{
+				temp = dup_line(&curr->content[i]);
+				free(curr->content);
+				new = new_node(temp);
+				new->content = temp;
+				new->next = *lst;
+				return (*lst);
+			}
 		}
+		free(curr->content);
+		curr = curr->next;
 	}
+	return (*lst);
 }
 
 char	*find_new_line(t_list *lst)
@@ -81,14 +91,12 @@ char	*get_next_line(int fd)
 	static t_list	*lst;
 	char			*line;
 
-	lst = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	get_content(&lst, fd);
 	line = find_new_line(lst);
 	clean_lst(&lst);
 	printf("%s", line);
-	
 	return (line);
 }
 
@@ -97,6 +105,7 @@ int	main(void)
 	int	fd;
 
 	fd = open("test_1.txt", O_RDONLY);
+	get_next_line(fd);
 	get_next_line(fd);
 	return (0);
 }
