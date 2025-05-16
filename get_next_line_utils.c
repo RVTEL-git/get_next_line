@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 13:41:48 by barmarti          #+#    #+#             */
-/*   Updated: 2025/05/16 13:14:57 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:04:23 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,43 @@
 
 void	print_list(t_list *lst)
 {
-	if (!lst)
+	t_list	*curr;
+
+	curr = lst;
+	if (!curr)
 	{
 		printf("No list available\n");
 		return ;
 	}
-	while (lst)
+	while (curr)
 	{
-		printf(" [%s] -> ", lst->content);
-		lst = lst->next;
+		printf(" [%s] -> \n", curr->content);
+		curr = curr->next;
 	}
 }
 
-t_list	*new_node(char	*content)
+void	*ft_calloc(size_t elem_c, size_t elem_s)//9
+{
+	size_t			i;
+	size_t			total;
+	unsigned char	*dest;
+
+	i = 0;
+	if (elem_s != 0 && elem_c > (size_t)-1 / elem_s)
+		return (NULL);
+	total = elem_c * elem_s;
+	dest = (unsigned char *)malloc(total);
+	if (!dest)
+		return (NULL);
+	while (i < total)
+	{
+		dest[i] = '\0';
+		i++;
+	}
+	return (dest);
+}
+
+t_list	*new_node(char	*content)//8
 {
 	t_list	*new;
 
@@ -39,7 +63,7 @@ t_list	*new_node(char	*content)
 	return (new);
 }
 
-t_list	*make_list(t_list **lst, char *buff)
+t_list	*make_list(t_list **lst, char *buff)//7
 {
 	t_list	*curr;
 	t_list	*new;
@@ -59,7 +83,7 @@ t_list	*make_list(t_list **lst, char *buff)
 	return (*lst);
 }
 
-int	get_line_len(t_list *lst)
+int	get_line_len(t_list *lst)//6
 {
 	int		i;
 	int		j;
@@ -87,7 +111,7 @@ int	get_line_len(t_list *lst)
 	return (0);
 }
 
-char	*dup_line(char *src)
+char	*dup_line(char *src)//5
 {
 	char	*dup;
 	int		i;
