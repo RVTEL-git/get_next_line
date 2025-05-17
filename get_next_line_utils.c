@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 13:41:48 by barmarti          #+#    #+#             */
-/*   Updated: 2025/05/16 17:04:23 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/05/17 17:50:53 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,28 +30,7 @@ void	print_list(t_list *lst)
 	}
 }
 
-void	*ft_calloc(size_t elem_c, size_t elem_s)//9
-{
-	size_t			i;
-	size_t			total;
-	unsigned char	*dest;
-
-	i = 0;
-	if (elem_s != 0 && elem_c > (size_t)-1 / elem_s)
-		return (NULL);
-	total = elem_c * elem_s;
-	dest = (unsigned char *)malloc(total);
-	if (!dest)
-		return (NULL);
-	while (i < total)
-	{
-		dest[i] = '\0';
-		i++;
-	}
-	return (dest);
-}
-
-t_list	*new_node(char	*content)//8
+t_list	*new_node(char	*content)
 {
 	t_list	*new;
 
@@ -63,7 +42,7 @@ t_list	*new_node(char	*content)//8
 	return (new);
 }
 
-t_list	*make_list(t_list **lst, char *buff)//7
+t_list	*make_list(t_list **lst, char *buff)
 {
 	t_list	*curr;
 	t_list	*new;
@@ -83,7 +62,7 @@ t_list	*make_list(t_list **lst, char *buff)//7
 	return (*lst);
 }
 
-int	get_line_len(t_list *lst)//6
+int	get_line_len(t_list *lst)
 {
 	int		i;
 	int		j;
@@ -111,7 +90,7 @@ int	get_line_len(t_list *lst)//6
 	return (0);
 }
 
-char	*dup_line(char *src)//5
+char	*dup_line(char *src)
 {
 	char	*dup;
 	int		i;
@@ -119,7 +98,7 @@ char	*dup_line(char *src)//5
 	i = 0;
 	while (src[i])
 		i++;
-	dup = malloc(i + 1);
+	dup = malloc((sizeof(char) * i) + 1);
 	if (!dup)
 		return (NULL);
 	i = 0;
