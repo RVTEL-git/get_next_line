@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 19:07:53 by barmarti          #+#    #+#             */
-/*   Updated: 2025/05/17 17:19:33 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/05/21 19:34:51 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,51 +18,67 @@ void	get_content(t_list **lst, int fd)
 	int		read_v;
 	char	*buff;
 
-	while (!get_line_len(*lst))
+	while (!is_nl(*lst))
 	{
 		buff = malloc(BUFFER_SIZE + 1);
 		if (!buff)
 			return ;
 		read_v = read(fd, buff, BUFFER_SIZE);
-		if (!read_v)
+		if (read_v <= 0)
 		{
 			free(buff);
 			return ;
 		}
 		buff[read_v] = '\0';
 		make_list(lst, buff);
+		free(buff);
 	}
 }
 
-t_list	*clean_lst(t_list **lst)
+void	clean_lst(t_list **list)
 {
+	t_list	*last;
+	t_list	*n_node;
+	char	*rem;
 	int		i;
-	t_list	*curr;
-	t_list	*to_free;
-	char	*temp;
 
+	i = 0;
+	n_node = NULL;
+	rem = NULL;
+	if (!list || !*list)
+		return ;
+	last = *list;
+	while (last->next)
+		last = last->next;
+	i = 0;
+	while (last->content[i] && last->content[i] != '\n')
+		i++;
+	if (last->content[i] == '\n' && last->content[i + 1])
+	{
+		rem = dup_line(last->content + i + 1);
+		n_node = new_node(rem);
+	}
+	free_lst(list, n_node, rem);
+}
+
+void	free_lst(t_list **lst, t_list *new, char *rem)
+{
+	t_list	*curr;
+	t_list	*next;
+
+	if (!*lst || !lst)
+		return ;
 	curr = *lst;
 	while (curr)
 	{
-		i = 0;
-		while (curr->content[i])
-		{
-			if (curr->content[i] == '\n')
-			{
-				temp = dup_line(&curr->content[i + 1]);
-				free(curr->content);
-				curr->content = temp;
-				*lst = curr;
-				return (*lst);
-			}
-			i++;
-		}
-		to_free = curr;
-		curr = curr->next;
-		free(to_free->content);
-		free(to_free);
+		next = curr->next;
+		free(curr->content);
+		free(curr);
+		curr = next;
 	}
-	return (*lst);
+	*lst = new;
+	if (!new)
+		free(rem);
 }
 
 char	*make_new_line(t_list *lst, int len)
@@ -89,7 +105,7 @@ char	*make_new_line(t_list *lst, int len)
 		}
 		curr = curr->next;
 	}
-	new_line[j++] = '\0';
+	new_line[j] = '\0';
 	return (new_line);
 }
 
@@ -99,23 +115,42 @@ char	*get_next_line(int fd)
 	char			*line;
 	int				index_nl;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	{
+		free_lst(&lst, NULL, NULL);
 		return (NULL);
+	}
 	get_content(&lst, fd);
-	index_nl = get_line_len(lst);
-	line = make_new_line(lst, index_nl);
-	lst = clean_lst(&lst);
-	if (lst == NULL)
+	if (!lst)
 		return (NULL);
-	printf("%s", line);
+	index_nl = get_len(lst);
+	line = make_new_line(lst, index_nl);
+	if (!line)
+	{
+		free_lst(&lst, NULL, NULL);
+		return (NULL);
+	}
+	clean_lst(&lst);
 	return (line);
 }
 
-int	main(void)
-{
-	int	fd;
+// int main(void)
+// {
+// 	int		fd;
+// 	char	*line;
 
-	fd = open("test_1.txt", O_RDONLY);
-	get_next_line(fd);
-	return (0);
-}
+// 	fd = open("test_2.txt", O_RDONLY);
+// 	if (fd < 0)
+// 	{
+// 		perror("open");
+// 		return (1);
+// 	}
+// 	while ((line = get_next_line(fd)))
+// 	{
+// 		printf("%s", line);
+// 		free(line);
+// 	}
+// 	free(line);
+// 	close(fd);
+// 	return (0);
+// }

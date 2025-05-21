@@ -6,29 +6,12 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 13:41:48 by barmarti          #+#    #+#             */
-/*   Updated: 2025/05/17 17:50:53 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/05/21 19:10:07 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
-
-void	print_list(t_list *lst)
-{
-	t_list	*curr;
-
-	curr = lst;
-	if (!curr)
-	{
-		printf("No list available\n");
-		return ;
-	}
-	while (curr)
-	{
-		printf(" [%s] -> \n", curr->content);
-		curr = curr->next;
-	}
-}
 
 t_list	*new_node(char	*content)
 {
@@ -49,7 +32,12 @@ t_list	*make_list(t_list **lst, char *buff)
 
 	if (!lst || !buff)
 		return (NULL);
-	new = new_node(buff);
+	new = new_node(dup_line(buff));
+	if (!new)
+	{
+		free(buff);
+		return (NULL);
+	}
 	if (!*lst)
 	{
 		*lst = new;
@@ -62,7 +50,7 @@ t_list	*make_list(t_list **lst, char *buff)
 	return (*lst);
 }
 
-int	get_line_len(t_list *lst)
+int	get_len(t_list *lst)
 {
 	int		i;
 	int		j;
@@ -70,7 +58,6 @@ int	get_line_len(t_list *lst)
 
 	curr = lst;
 	i = 0;
-	j = 0;
 	while (curr)
 	{
 		j = 0;
@@ -87,6 +74,26 @@ int	get_line_len(t_list *lst)
 		}
 		curr = curr->next;
 	}
+	return (i);
+}
+
+int	is_nl(t_list *lst)
+{
+	int		j;
+	t_list	*curr;
+
+	curr = lst;
+	while (curr)
+	{
+		j = 0;
+		while (curr->content[j])
+		{
+			if (curr->content[j] == '\n')
+				return (1);
+			j++;
+		}
+		curr = curr->next;
+	}
 	return (0);
 }
 
@@ -95,6 +102,8 @@ char	*dup_line(char *src)
 	char	*dup;
 	int		i;
 
+	if (!src)
+		return (NULL);
 	i = 0;
 	while (src[i])
 		i++;
