@@ -6,7 +6,7 @@
 /*   By: barmarti <barmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 19:07:53 by barmarti          #+#    #+#             */
-/*   Updated: 2025/05/21 19:34:51 by barmarti         ###   ########.fr       */
+/*   Updated: 2025/05/22 09:50:31 by barmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,24 +133,3 @@ char	*get_next_line(int fd)
 	clean_lst(&lst);
 	return (line);
 }
-
-// int main(void)
-// {
-// 	int		fd;
-// 	char	*line;
-
-// 	fd = open("test_2.txt", O_RDONLY);
-// 	if (fd < 0)
-// 	{
-// 		perror("open");
-// 		return (1);
-// 	}
-// 	while ((line = get_next_line(fd)))
-// 	{
-// 		printf("%s", line);
-// 		free(line);
-// 	}
-// 	free(line);
-// 	close(fd);
-// 	return (0);
-// }
